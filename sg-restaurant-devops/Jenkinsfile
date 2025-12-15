@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'mymvn'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/yourusername/sg-restaurant-devops.git'
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                dir('app') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t sgrestaurant:latest .'
+            }
+        }
+
+        stage('Stop Old Container') {
+            steps {
+                sh '''
+                    ID=$(docker ps -q --filter "name=sgrestaurant")
+                    if [ ! -z "$ID" ]; then
+                        docker stop $ID
+                        docker rm $ID
+                    fi
+                '''
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh '''
+                    docker run -d -p 8080:8080 --name sgrestaurant sgrestaurant:latest
+                '''
+            }
+        }
+    }
+}

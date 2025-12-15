@@ -1,0 +1,9 @@
+<h2>Scan here and Make Payment</h2>
+<p>Total Amount: ₹<span th:text="${amount}"></span></p>
+
+<!-- Example: replace pa=demo@upi with your actual UPI ID -->
+<img th:src="'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=9581556123@pthdfc&pn=DemoName&cu=INR&am=' + ${amount}" 
+     alt="UPI QR Code" width="250" />
+
+<br><br>
+<a href="/success">I have paid</a>

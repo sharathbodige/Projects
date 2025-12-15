@@ -1,0 +1,13 @@
+<h2>Veg Menu</h2>
+<ul>
+    <th:block th:each="item : ${items}">
+        <li>
+            <span th:text="${item.name}"></span> -
+            ₹<span th:text="${item.price}"></span>
+            <form action="/addToCart" method="post">
+                <input type="hidden" name="name" th:value="${item.name}">
+                <button>Select</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
