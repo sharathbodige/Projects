@@ -1,0 +1,17 @@
+
+version: "3.8"
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+
+  user-service:
+    build: ./user-service-node
+    ports:
+      - "3000:3000"
+
+  payment-service:
+    build: ./payment-service-python
+    ports:
+      - "5000:5000"
